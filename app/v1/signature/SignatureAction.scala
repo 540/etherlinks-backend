@@ -1,4 +1,4 @@
-package v1.post
+package v1.signature
 
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ import scala.concurrent.{ExecutionContext, Future}
   * This is commonly used to hold request-specific information like
   * security credentials, and useful shortcut methods.
   */
-class PostRequest[A](request: Request[A], val messages: Messages)
+class SignatureRequest[A](request: Request[A], val messages: Messages)
     extends WrappedRequest(request)
 
 /**
@@ -24,12 +24,12 @@ class PostRequest[A](request: Request[A], val messages: Messages)
   * the request with contextual data, and manipulate the
   * result.
   */
-class PostAction @Inject()(messagesApi: MessagesApi)(
+class SignatureAction @Inject()(messagesApi: MessagesApi)(
     implicit ec: ExecutionContext)
-    extends ActionBuilder[PostRequest]
+    extends ActionBuilder[SignatureRequest]
     with HttpVerbs {
 
-  type PostRequestBlock[A] = PostRequest[A] => Future[Result]
+  type PostRequestBlock[A] = SignatureRequest[A] => Future[Result]
 
   private val logger = org.slf4j.LoggerFactory.getLogger(this.getClass)
 
@@ -40,7 +40,7 @@ class PostAction @Inject()(messagesApi: MessagesApi)(
     }
 
     val messages = messagesApi.preferred(request)
-    val future = block(new PostRequest(request, messages))
+    val future = block(new SignatureRequest(request, messages))
 
     future.map { result =>
       request.method match {

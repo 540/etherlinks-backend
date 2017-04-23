@@ -1,9 +1,8 @@
-package controllers
+package v1.signature
 
 import java.io.InputStream
 
-import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
+import com.google.firebase.{FirebaseApp, FirebaseOptions}
 import com.google.firebase.database._
 
 object Firebase {
